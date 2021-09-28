@@ -17,9 +17,7 @@ import Config from 'react-native-config';
 const App = () => {
   return (
     <>
-      <View>
-        <Text>{Config.API_URL}</Text>
-      </View>
+      <View />
       <MyCom />
     </>
   );

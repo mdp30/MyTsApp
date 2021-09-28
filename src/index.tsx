@@ -1,29 +1,42 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View, TextInput, Alert, Button} from 'react-native';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useState, useEffect} from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  FlatList,
+  View,
+  StatusBar,
+} from 'react-native';
 // import {WebView} from 'react-native-webview';
 
 import {testFun} from './pages/test';
+import SsArtilce from './components/SsArticle';
 const MyCom = () => {
-  const [name, setName] = useState('请输入用户名');
+  const [artilce_list, setArtilce_list] = useState([]);
   // testFun();
+  useEffect(() => {
+    getListAsync();
+  }, []);
 
-  const onChangeText = (text: string) => {
-    console.log('text', text);
-
-    setName(text);
+  const getListAsync = () => {
+    fetch(
+      'http://8.129.85.111:50020/api/core/v1/topic_articles?topic_name=%E7%8F%A0%E6%B5%B7%E6%9C%80%E5%80%BC%E5%BE%97%E5%8E%BB%E7%9A%84%E6%99%AF%E7%82%B9&topic_id=124&nav_item_id=2&page=1&page_size=10&keyword=&city_id=8',
+    )
+      .then(response => response.json())
+      .then(resJson => {
+        setArtilce_list(resJson.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
-  const createButtonAlert = () => {
-    Alert.alert('标题', '这里是提示', [
-      {
-        text: '取消',
-        onPress: () => console.log('点击取消'),
-        style: 'cancel',
-      },
-      {
-        text: '确定',
-        onPress: () => console.log('ok'),
-      },
-    ]);
+  const renderItem = (item: any) => {
+    return (
+      <View style={styles.item}>
+        <SsArtilce article={item.item} />
+      </View>
+    );
   };
   /**
    * 样式
@@ -31,38 +44,18 @@ const MyCom = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: 'steelblue',
+      marginTop: StatusBar.currentHeight || 0,
+      backgroundColor: '#EDEDED',
+      justifyContent: 'center',
     },
-    title: {
-      color: '#fff',
-    },
-    inputName: {
-      height: 40,
-      borderWidth: 1,
-      borderColor: 'gray',
-    },
-    text: {
-      fontSize: 42,
-    },
+    item: {},
   });
 
   return (
     <>
-      <View style={styles.container}>
-        <Text style={styles.title}>社书</Text>
-        <TextInput
-          style={styles.inputName}
-          value={name}
-          onChangeText={text => onChangeText(text)}
-        />
-        <Text>{name}</Text>
-        {/* <WebView
-          source={{
-            uri: 'https://sheshu.blockoor.com/h5/activity/f9e9e44da12a837f',
-          }}
-        /> */}
-        <Button title={'弹窗'} onPress={createButtonAlert} />
-      </View>
+      <SafeAreaView style={styles.container}>
+        <FlatList data={artilce_list} renderItem={renderItem} />
+      </SafeAreaView>
     </>
   );
 };
