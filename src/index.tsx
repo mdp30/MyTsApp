@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, TextInput} from 'react-native';
-import {WebView} from 'react-native-webview';
+import {StyleSheet, Text, View, TextInput, Alert, Button} from 'react-native';
+// import {WebView} from 'react-native-webview';
 
 import {testFun} from './pages/test';
 const MyCom = () => {
@@ -11,6 +11,19 @@ const MyCom = () => {
     console.log('text', text);
 
     setName(text);
+  };
+  const createButtonAlert = () => {
+    Alert.alert('标题', '这里是提示', [
+      {
+        text: '取消',
+        onPress: () => console.log('点击取消'),
+        style: 'cancel',
+      },
+      {
+        text: '确定',
+        onPress: () => console.log('ok'),
+      },
+    ]);
   };
   /**
    * 样式
@@ -43,11 +56,12 @@ const MyCom = () => {
           onChangeText={text => onChangeText(text)}
         />
         <Text>{name}</Text>
-        <WebView
+        {/* <WebView
           source={{
             uri: 'https://sheshu.blockoor.com/h5/activity/f9e9e44da12a837f',
           }}
-        />
+        /> */}
+        <Button title={'弹窗'} onPress={createButtonAlert} />
       </View>
     </>
   );
