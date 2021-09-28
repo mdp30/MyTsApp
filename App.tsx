@@ -9,18 +9,13 @@
  */
 
 import React from 'react';
-import {Text, View} from 'react-native';
-import MyCom from './src';
+// import {Text, View} from 'react-native';
 
-import Config from 'react-native-config';
+// import Config from 'react-native-config';
+import Navigator from './src/navigator';
 
 const App = () => {
-  return (
-    <>
-      <View />
-      <MyCom />
-    </>
-  );
+  return <Navigator />;
 };
 
 export default App;
